@@ -1,0 +1,2 @@
+defmodule Logic do
+end

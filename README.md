@@ -1,4 +1,4 @@
-# Logic
+# Logic [![Build Status](https://secure.travis-ci.org/lmarlow/logic.png)](http://travis-ci.org/lmarlow/logic)
 
 Logic gates, circuits from Petzold's CODE
 

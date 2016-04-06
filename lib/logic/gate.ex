@@ -35,20 +35,19 @@ defmodule Logic.Gate do
     {:reply, {gate.inputs, gate.inputs |> do_outputs(gate.outputs_fn)}, gate}
   end
 
-  def handle_info({:input, position, value} = input, g = %G{}) do
+  def handle_info({:input, position, value}, g = %G{}) do
     {:noreply, do_input(position, Enum.at(g.inputs, position), value, g)}
   end
 
-  def handle_cast({:connect, output_position,
-                   other_gate, other_input},
-                   gate = %G{}) do
-    other = {other_gate, other_input}
-    input(other, gate.inputs |> do_outputs(gate.outputs_fn)
-                 |> Enum.at(output_position)
-         )
-    wires = gate.wires
-            |> Map.update(output_position, [other], &[other|&1])
-    {:noreply, %{gate | wires: wires}}
+  def handle_cast({:connect, out_position, other_gate, other_input}, g = %G{}) do
+    {:noreply, do_connect(out_position, {other_gate, other_input}, g)}
+  end
+
+  defp do_connect(out_pos, other = {_g, _in_pos}, g = %G{}) do
+    out_value = g.inputs |> do_outputs(g.outputs_fn) |> Enum.at(out_pos)
+    # send current value to new connection
+    other |> input(out_value)
+    %{g | wires: g.wires |> Map.update(out_pos, [other], &[other|&1])}
   end
 
   defp do_input(position, old_value, new_value, gate)

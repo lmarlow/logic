@@ -13,7 +13,6 @@ defmodule Logic do
 
   def nand?(in1, in2), do: and?(in1, in2) |> not?
 
-
   def or?(in1, in2)
   def or?(false, false), do: false
   def or?(_, _), do: true

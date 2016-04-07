@@ -51,10 +51,22 @@ defmodule Logic.Gates do
   end
 
   defmodule And do
-    def gate(), do: Gs.gate(&[Logic.and?(&1, &2)])
+    def gate(), do: Gs.gate(&[Logic.and?(&1)])
   end
 
   defmodule Or do
-    def gate(), do: Gs.gate(&[Logic.or?(&1, &2)])
+    def gate(), do: Gs.gate(&[Logic.or?(&1)])
+  end
+
+  def watch(gate, fun) do
+    inputs = G.outputs(gate)
+    {:ok, watcher} = G.start_link(inputs, fn ins ->
+                                            fun.(ins)
+                                            ins
+                                          end
+                                 )
+    1..length(inputs)
+    |> Enum.each(&G.connect(gate, &1 - 1, watcher, &1 - 1))
+    watcher
   end
 end

@@ -72,5 +72,5 @@ defmodule Logic.Gate do
                  end)
   end
 
-  defp do_outputs(ins, fun), do: apply(fun, ins)
+  defp do_outputs(ins, fun), do: fun.(ins)
 end

@@ -36,8 +36,7 @@ defmodule Logic.Gates do
   alias __MODULE__, as: Gs
   alias Logic.Gate, as: G
 
-  def gate(fun) do
-    {:arity, count} = :erlang.fun_info(fun, :arity)
+  def gate(fun, count \\ 1) do
     {:ok, pid} = G.start_link(List.duplicate(false, count), fun)
     pid
   end
@@ -51,11 +50,11 @@ defmodule Logic.Gates do
   end
 
   defmodule And do
-    def gate(), do: Gs.gate(&[Logic.and?(&1)])
+    def gate(), do: Gs.gate(&[Logic.and?(&1)], 2)
   end
 
   defmodule Or do
-    def gate(), do: Gs.gate(&[Logic.or?(&1)])
+    def gate(), do: Gs.gate(&[Logic.or?(&1)], 2)
   end
 
   def watch(gate, fun) do

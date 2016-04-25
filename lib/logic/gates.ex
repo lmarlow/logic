@@ -63,6 +63,14 @@ defmodule Logic.Gates do
     end
   end
 
+  defmodule Nand do
+    def gate() do
+      Gs.gate([:a, :b], fn %{a: a, b: b} ->
+                          %{out: Logic.nand?(a, b)}
+                        end)
+    end
+  end
+
   defmodule Or do
     def gate() do
       Gs.gate([:a, :b], fn %{a: a, b: b} ->
